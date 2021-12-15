@@ -1,12 +1,22 @@
 <script setup>
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from './components/HelloWorld.vue'
+//import HelloWorld from './components/HelloWorld.vue'
+import TransactionsForm from './components/TransactionsForm.vue'
+import TransactionsList from './components/TransactionsList.vue'
 </script>
 
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + Vite" />
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <TransactionsForm />    
+      </div>
+      <div class="col-12 col-md-8">
+        <TransactionsList />
+      </div>
+    </div>
+  </div>
 </template>
 
 <style>
