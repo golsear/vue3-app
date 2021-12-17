@@ -12,7 +12,7 @@ import TransactionsList from './components/TransactionsList.vue'
       <div class="col-12 col-md-4">
         <TransactionsForm />    
       </div>
-      <div class="col-12 col-md-8">
+      <div class="col-12 col-md-7 offset-md-1">
         <TransactionsList />
       </div>
     </div>

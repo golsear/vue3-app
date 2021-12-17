@@ -1,8 +1,9 @@
 <template>
   <div>
+    <h2 class="text-start mb-3">Submit new transaction</h2>
     <form @submit.prevent="onSubmit"
           ref="form"
-          class="row">
+          class="row mb-3">
       <div class="col-12 text-start mb-3">
         <label for="accountId" 
                class="form-label">Account ID:</label>
@@ -18,7 +19,7 @@
         <input id="amount"
                :class="[!amountIsValid ? 'is-invalid' : '', 'form-control']" 
                data-type="amount" 
-               v-model="amount" 
+               v-model.number="amount" 
                type="text">
         <div v-if="!amountIsValid" class="invalid-feedback">Please choose a username.</div>    
       </div>
@@ -58,7 +59,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import axios from 'axios';
 
 export default {
@@ -72,16 +73,20 @@ export default {
   },
   computed: {
     amountIsValid: function () {
-      const pattern = /^\d+$/;
-      return pattern.test(this.amount);
+      const pattern = /^[0-9]+$/;
+      return typeof this.amount == 'number' && !isNaN(this.amount);
     },
     accountIdIsValid: function () {
-      const pattern = /^[A-Za-z][-A-Za-z0-9]*$/;
-      return pattern.test(this.accountId);
+      const pattern = /^[A-Za-z0-9-]*$/;
+      return pattern.test(this.accountId) && this.accountId.length > 9;
     },
     formIsValid: function () {
       return this.amountIsValid && this.accountIdIsValid ? true : false;
     },
+    ...mapGetters([
+      'accountBalance',
+      'transactions'
+    ])
   },
   methods: {
     ...mapActions([
@@ -97,12 +102,14 @@ export default {
       this.amount = null;    
     },
     postData: function () {
+      const accountBalance = this.transactions.length ? (Number(this.transactions[0].accountBalance) + Number(this.amount)) : Number(this.amount); 
       const transaction = {
         id: this.accountId,
-        amount: this.amount
+        amount: Number(this.amount.toFixed(2)),
+        accountBalance: Number(accountBalance.toFixed(2))
       };
       const self = this;
-
+      
       axios({
         method: 'post',
         url: 'https://httpbin.org/status/' + self.responseStatusCode,
