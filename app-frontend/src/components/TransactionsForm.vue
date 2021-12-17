@@ -47,8 +47,9 @@
                  for="status-400">Status 400</label>    
         </div>
       </div>
-      <div class="col-12 text-start mb-3">
-        <div v-if="responseErrorMessage">
+      <div v-if="responseErrorMessage" 
+           class="col-12 text-start mb-3">
+        <div class="text-danger">
           {{ responseErrorMessage }}
         </div>
       </div>
